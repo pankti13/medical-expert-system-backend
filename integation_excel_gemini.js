@@ -8,7 +8,7 @@ const fs = require("fs");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
 app.use(express.json());
-const genAI = new GoogleGenerativeAI("AIzaSyDyQgYL5OJLm-SgWIOZRxJJ7IXRJmnpoBQ");
+const genAI = new GoogleGenerativeAI(Your_API_Key);
 const writeFileAsync = promisify(writeFile);
 
 // Route handler for the root path ("/")
