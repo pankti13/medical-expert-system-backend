@@ -34,10 +34,12 @@ app.post("/user", async (req, res) => {
 
     // Generate content using Google Generative AI
     const precaution = await generatePrecaution(prompt);
-    let finalString="";
-    precaution.forEach((c)=>{
-      if(c!='*') finalString+=c;
+    let finalString = "";
+    precaution.forEach((c) => {
+      if (c != "*") finalString += c;
     });
+   
+   
 
     // Send a response to the client
     res.send(
@@ -48,6 +50,7 @@ app.post("/user", async (req, res) => {
     res.status(500).send("Error handling user data.");
   }
 });
+
 
 const directoryPath = "./";
 fs.access(directoryPath, fs.constants.W_OK, (err) => {
@@ -112,6 +115,32 @@ function flattenUserData(userData) {
   return flattenedUserData;
 }
 
+// async function generatePrecaution(prompt) {
+//   try {
+//     const generationConfig = {
+//       stopSequences: ["red"],
+//       maxOutputTokens: 200,
+//       temperature: 0.9,
+//       topP: 0.1,
+//       topK: 16,
+//     };
+//     // For text-only input, use the gemini-pro model
+//     const model = genAI.getGenerativeModel({
+//       model: "gemini-pro",
+//       generationConfig,
+//     });
+
+//     const result = await model.generateContent(prompt);
+//     const response = await result.response;
+//     const text = response.text();
+//     console.log(text);
+//     return text;
+//   } catch (error) {
+//     console.error("Error generating precaution:", error);
+//     // In generatePrecaution function
+//     return ["Error generating precaution: " + error.message];
+//   }
+// }
 async function generatePrecaution(prompt) {
   try {
     const generationConfig = {
@@ -129,11 +158,16 @@ async function generatePrecaution(prompt) {
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = response.text();
+    const text = response
+      .text()
+      .split("\n")
+      .filter((line) => line.trim() !== ""); 
     console.log(text);
     return text;
   } catch (error) {
     console.error("Error generating precaution:", error);
-    return "Error generating precaution";
+    // In generatePrecaution function
+    return ["Error generating precaution: " + error.message];
   }
 }
+
