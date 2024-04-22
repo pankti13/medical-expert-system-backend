@@ -30,7 +30,7 @@ app.post("/user", async (req, res) => {
 
     const prompt = `I have ${symptoms.join(
       ", "
-    )} symptoms. What are the precautions I need to take?`;
+    )} symptoms. What are the precautions I need to take? write response in 150 words`;
 
     // Generate content using Google Generative AI
     const precaution = await generatePrecaution(prompt);
@@ -50,6 +50,7 @@ app.post("/user", async (req, res) => {
     res.status(500).send("Error handling user data.");
   }
 });
+
 
 
 const directoryPath = "./";
@@ -152,8 +153,7 @@ async function generatePrecaution(prompt) {
     };
     // For text-only input, use the gemini-pro model
     const model = genAI.getGenerativeModel({
-      model: "gemini-pro",
-      generationConfig,
+      model: "gemini-pro"
     });
 
     const result = await model.generateContent(prompt);
