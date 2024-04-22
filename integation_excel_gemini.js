@@ -34,10 +34,14 @@ app.post("/user", async (req, res) => {
 
     // Generate content using Google Generative AI
     const precaution = await generatePrecaution(prompt);
+    let finalString="";
+    precaution.forEach((c)=>{
+      if(c!='*') finalString+=c;
+    });
 
     // Send a response to the client
     res.send(
-      `User data received and stored successfully. Precautions: ${precaution}`
+      `User data received and stored successfully. Precautions: ${finalString}`
     );
   } catch (error) {
     console.error("Error handling user data:", error);
